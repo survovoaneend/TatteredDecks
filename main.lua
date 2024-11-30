@@ -1,0 +1,335 @@
+Tattered = SMODS.current_mod
+
+Tattered.b_side_table = {}
+
+Tattered.add_b_side = function(deck_id, b_side_id)
+	Tattered.b_side_table[deck_id] = b_side_id; Tattered.b_side_table[b_side_id] = deck_id
+end
+
+SMODS.Back{
+	name = "Tattered Red Deck",
+	key = "red",
+    atlas = "b_side_atlas",
+	pos = {x = 0, y = 0},
+	config = {b_side = true, hands = 25-4, discards = 25-3, static_plays = true},
+	loc_txt = {
+		name = "Tattered Red Deck",
+		text ={
+			"Start run with",
+			"{C:blue}#1#{} hands and {C:red}#2#{} discards",
+			"hands/discards reset every 8 antes"
+		},
+    },
+	loc_vars = function(self)
+        return {
+            vars = { self.config.hands+4, self.config.discards+3 }
+        }
+	end,
+	omit = true
+}
+
+
+SMODS.Back{
+	name = "Tattered Blue Deck",
+	key = "blue",
+    atlas = "b_side_atlas",
+	pos = {x = 1, y = 0},
+	config = {b_side = true},
+	loc_txt = {
+		name = "Tattered Blue Deck",
+		text ={
+			"Test Text",
+		},
+    },
+	apply = function()
+	end,
+	omit = true
+}
+
+SMODS.Back{
+	name = "Tattered Yellow Deck",
+	key = "yellow",
+    atlas = "b_side_atlas",
+	pos = {x = 2, y = 0},
+	config = {b_side = true},
+	loc_txt = {
+		name = "Tattered Yellow Deck",
+		text ={
+			"Test Text",
+		},
+    },
+	apply = function()
+	end,
+	omit = true
+}
+
+SMODS.Back{
+	name = "Tattered Green Deck",
+	key = "green",
+    atlas = "b_side_atlas",
+	pos = {x = 3, y = 0},
+	config = {b_side = true},
+	loc_txt = {
+		name = "Tattered Green Deck",
+		text ={
+			"Test Text",
+		},
+    },
+	apply = function()
+	end,
+	omit = true
+}
+
+SMODS.Back{
+	name = "Tattered Black Deck",
+	key = "black",
+    atlas = "b_side_atlas",
+	pos = {x = 4, y = 0},
+	config = {b_side = true},
+	loc_txt = {
+		name = "Tattered Black Deck",
+		text ={
+			"Test Text",
+		},
+    },
+	apply = function()
+	end,
+	omit = true
+}
+
+SMODS.Back{
+	name = "Tattered Checkered Deck",
+	key = "checkered",
+    atlas = "b_side_atlas",
+	pos = {x = 0, y = 1},
+	config = {b_side = true},
+	loc_txt = {
+		name = "Tattered Checkered Deck",
+		text ={
+			"Start run with",
+			"{C:attention}52{} {C:spades}Spades{} in deck",
+			"Played card's suits are rotated",
+			"{C:spades}Spades{}->{C:hearts}Hearts{}->{C:clubs}Clubs{}->{C:diamonds}Diamonds{}->{C:spades}Spades{}"
+		},
+    },
+	apply = function()
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				for _, v in pairs(G.playing_cards) do
+					v:change_suit('Spades')
+				end
+				return true
+			end
+		}))
+	end,
+	omit = true
+}
+
+SMODS.Back{
+	name = "Tattered Zodiac Deck",
+	key = "zodiac",
+    atlas = "b_side_atlas",
+	pos = {x = 1, y = 1},
+	config = {b_side = true},
+	loc_txt = {
+		name = "Tattered Zodiac Deck",
+		text ={
+			"Test Text",
+		},
+    },
+	apply = function()
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				G.GAME.tarot_rate = 0
+				G.GAME.planet_rate = 0
+				return true
+			end
+		}))
+	end,
+	omit = true
+}
+
+SMODS.Back{
+	name = "Tattered Anaglyph Deck",
+	key = "anaglyph",
+    atlas = "b_side_atlas",
+	pos = {x = 2, y = 1},
+	config = {b_side = true},
+	loc_txt = {
+		name = "Tattered Anaglyph Deck",
+		text ={
+			"Test Text",
+		},
+    },
+	apply = function()
+	end,
+	omit = true
+}
+
+SMODS.Back{
+	name = "Tattered Plasma Deck",
+	key = "plasma",
+    atlas = "b_side_atlas",
+	pos = {x = 3, y = 1},
+	config = {b_side = true},
+	loc_txt = {
+		name = "Tattered Plasma Deck",
+		text ={
+			"Test Text",
+		},
+    },
+	apply = function()
+	end,
+	omit = true
+}
+
+SMODS.Back{
+	name = "Tattered Erratic Deck",
+	key = "erratic",
+    atlas = "b_side_atlas",
+	pos = {x = 4, y = 1},
+	config = { b_side = true},
+	omit = true,
+	loc_txt = {
+		name = "Tattered Erratic Deck",
+		text ={
+			"Test Text",
+		},
+    },
+	apply = function()
+	end,
+}
+
+SMODS.Atlas {
+    key = "b_side_atlas",
+    path = "b_sides.png",
+    px = 71,
+    py = 95
+}
+
+-- Auto add tattered decks
+
+for _, deck in ipairs({"red", "yellow","checkered"}) do
+	Tattered.add_b_side("b_" .. deck, "b_tattered_" .. deck)
+end
+
+local back_trigger_effect = Back.trigger_effect
+function Back:trigger_effect(args) -- Append trigger effect function
+	back_trigger_effect(self, args) -- Run vanilla checks
+	if self.name == 'Tattered Checkered Deck' and args.context == 'final_scoring_step' then
+		for i, card in ipairs(G.play.cards) do
+			local percent = 1.15 - (i-0.999)/(#G.play.cards-0.998)*0.3
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.05,
+				func = function()	
+				card:flip()
+				play_sound('card1', percent)
+				card:juice_up(0.3, 0.3)
+				return true
+				end
+			}))
+		end
+		for _, card in ipairs(G.play.cards) do
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.05,
+				func = function()	
+				if card.config.card.suit == "Spades" then card:change_suit("Hearts")
+				elseif card.config.card.suit == "Hearts" then card:change_suit("Clubs")
+				elseif card.config.card.suit == "Clubs" then card:change_suit("Diamonds")
+				elseif card.config.card.suit == "Diamonds" then card:change_suit("Spades") end
+				return true
+				end
+			}))
+		end
+		for i, card in ipairs(G.play.cards) do
+			local percent = 1.15 - (i-0.999)/(#G.play.cards-0.998)*0.3
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.05,
+				func = function()	
+				card:flip()
+				play_sound('card1', percent)
+				card:juice_up(0.3, 0.3)
+				return true
+				end
+			}))
+		end
+	end
+
+	if self.name == "Tattered Zodiac Deck" and args.context == 'ending_shop' then
+		local temp_deck = {}
+        for k, v in ipairs(G.deck.cards) do temp_deck[#temp_deck+1] = v end
+		pseudoshuffle(temp_deck, pseudoseed('tatteredzodiac'))
+		local cen_pool = {}
+		for k, v in pairs(G.P_CENTER_POOLS["Enhanced"]) do
+			if v.key ~= 'm_stone' then 
+				cen_pool[#cen_pool+1] = v
+			end
+		end
+		temp_deck[1]:set_ability(pseudorandom_element(cen_pool, pseudoseed('spe_card')))
+		temp_deck[2]:set_ability(pseudorandom_element(cen_pool, pseudoseed('spe_card')))
+	end
+end
+
+G.FUNCS.flip_b_sides = function ()
+	play_sound('gong', 0.5,1.0)
+	for _, deck_area in ipairs(Galdur.run_setup.deck_select_areas) do
+		if #deck_area.cards ~= 0 then
+			local card = deck_area.cards[1]
+			if Tattered.b_side_table[card.config.center.key] ~= nil then
+				local center = G.P_CENTERS[Tattered.b_side_table[card.config.center.key]]
+				G.E_MANAGER:add_event(Event({trigger = 'immediate', blockable = false, func = function() 
+					play_sound('crumple1', math.random() * 0.2 + 0.5,1.0)
+					for _, i in ipairs(deck_area.cards) do
+						i:start_dissolve({G.C.BLACK, G.C.ORANGE, G.C.RED, G.C.GOLD, G.C.JOKER_GREY}, true, 0.5)
+					end
+					return true
+				end }))
+				for _ = 1, Galdur.config.reduce and 1 or 10 do
+					G.E_MANAGER:add_event(Event({trigger = 'after', blockable = false, func = function()
+							local new_card = Card(deck_area.T.x, deck_area.T.y, G.CARD_W, G.CARD_H, center, center, {galdur_back = Back(center), deck_select = 1})
+							new_card.deck_select_position = true -- Hack
+							new_card.sprite_facing = 'back'
+							new_card.facing = 'back'
+							new_card.children.back = Sprite(card.T.x, card.T.y, card.T.w, card.T.h, G.ASSET_ATLAS[center.atlas or 'centers'], center.pos)
+							new_card.children.back.states.hover = card.states.hover
+							new_card.children.back.states.click = card.states.click
+							new_card.children.back.states.drag = card.states.drag
+							new_card.children.back.states.collide.can = false
+							new_card.children.back:set_role({major = new_card, role_type = 'Glued', draw_major = new_card})
+							deck_area:emplace(new_card)
+							return true
+						end
+					}))
+				end
+			end
+		end
+	end
+end
+
+
+
+-- FUCKED UP PATCHES BELOW
+
+function custom_deck_select_page_deck()
+    local page = deck_select_page_deck()
+	local button_area = page.nodes[1].nodes[2].nodes[1].nodes[1]
+
+	local switch_button = {n = G.UIT.R, config={align = 'cm', padding = 0.15}, nodes = {
+        {n=G.UIT.R, config = {maxw = 2.5, minw = 2.5, minh = 0.8, r = 0.1, hover = true, ref_value = 1, button = 'flip_b_sides', colour = Tattered.badge_colour, align = "cm", emboss = 0.1}, nodes = {
+            {n=G.UIT.T, config={text = "Tattered", scale = 0.4, colour = Tattered.badge_text_colour}}
+        }}
+    }}
+
+	table.insert(button_area.nodes, 1, switch_button)
+
+	return page
+end
+
+for _, args in ipairs(Galdur.pages_to_add) do
+	if args.name == "gald_select_deck" then
+		args.definition = custom_deck_select_page_deck
+	end
+end
