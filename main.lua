@@ -110,6 +110,31 @@ SMODS.Back{
 }
 
 SMODS.Back{
+	name = "Tattered Nebula Deck",
+	key = "nebula",
+    atlas = "b_side_atlas",
+	pos = {x = 0, y = 0},
+	config = {b_side = true, alt_planet_levels = 3, negative_planet_levels = 1, consumables = {'c_high_priestess'}},
+	loc_txt = {
+		name = "Tattered Nebula Deck",
+		text ={
+			"Planet cards now",
+			"level up hands by {C:planet}#1#{} and",
+			"level down a random hand by {C:red}#2#{}",
+			"start with High Priestess"
+		},
+    },
+	loc_vars = function(self)
+        return {
+            vars = { self.config.alt_planet_levels, self.config.negative_planet_levels}
+        }
+	end,
+	apply = function()
+	end,
+	omit = true
+}
+
+SMODS.Back{
 	name = "Tattered Checkered Deck",
 	key = "checkered",
     atlas = "b_side_atlas",
@@ -213,7 +238,7 @@ SMODS.Atlas {
 }
 
 -- Auto add tattered decks
-for _, deck in ipairs({"red", "yellow", "checkered"}) do
+for _, deck in ipairs({"red", "yellow", "nebula", "checkered"}) do
 	Tattered.add_b_side("b_" .. deck, "b_tattered_" .. deck)
 end
 

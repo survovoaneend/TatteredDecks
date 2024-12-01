@@ -63,3 +63,30 @@ if G.GAME.selected_back.effect.config.money_mult then
     G.GAME.current_round.dollars = math.floor((G.GAME.current_round.dollars * G.GAME.selected_back.effect.config.money_mult + G.GAME.selected_back.effect.config.money_mult_min) * G.GAME.dollars) - G.GAME.dollars
 end
 '''
+
+# T.Nebula Deck
+
+#level_up_hand(used_tarot, handname, nil, -1)
+#level_up_hand(used_tarot, self.ability.consumeable.hand_type)
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''level_up_hand(used_tarot, self.ability.consumeable.hand_type)'''
+position = 'at'
+match_indent = true
+payload = '''
+level_up_hand(used_tarot, self.ability.consumeable.hand_type, nil, G.GAME.selected_back.effect.config.alt_planet_levels or 1)
+if G.GAME.selected_back.effect.config.negative_planet_levels then
+    local valid_hands = {}
+    for hand_key, hand in pairs(G.GAME.hands) do 
+        if hand.visible and hand.level > 0 then
+            valid_hands[#valid_hands+1] = hand_key
+        end 
+    end
+    if valid_hands then
+        local random_hand = pseudorandom_element(valid_hands, pseudoseed('rand_level_down'))
+        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize(random_hand, 'poker_hands'),chips = G.GAME.hands[random_hand].chips, mult = G.GAME.hands[random_hand].mult, level=G.GAME.hands[random_hand].level})
+        level_up_hand(used_tarot, random_hand, nil, -G.GAME.selected_back.effect.config.negative_planet_levels)
+    end
+end
+'''
