@@ -1,11 +1,14 @@
 Tattered = SMODS.current_mod
 
+-- Definitions
 Tattered.b_side_table = {}
 
+-- API
 Tattered.add_b_side = function(deck_id, b_side_id)
 	Tattered.b_side_table[deck_id] = b_side_id; Tattered.b_side_table[b_side_id] = deck_id
 end
 
+-- Decks
 SMODS.Back{
 	name = "Tattered Red Deck",
 	key = "red",
@@ -147,13 +150,6 @@ SMODS.Back{
 		},
     },
 	apply = function()
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				G.GAME.tarot_rate = 0
-				G.GAME.planet_rate = 0
-				return true
-			end
-		}))
 	end,
 	omit = true
 }
@@ -217,8 +213,7 @@ SMODS.Atlas {
 }
 
 -- Auto add tattered decks
-
-for _, deck in ipairs({"red", "yellow","checkered"}) do
+for _, deck in ipairs({"red", "yellow", "checkered"}) do
 	Tattered.add_b_side("b_" .. deck, "b_tattered_" .. deck)
 end
 
@@ -265,20 +260,6 @@ function Back:trigger_effect(args) -- Append trigger effect function
 				end
 			}))
 		end
-	end
-
-	if self.name == "Tattered Zodiac Deck" and args.context == 'ending_shop' then
-		local temp_deck = {}
-        for k, v in ipairs(G.deck.cards) do temp_deck[#temp_deck+1] = v end
-		pseudoshuffle(temp_deck, pseudoseed('tatteredzodiac'))
-		local cen_pool = {}
-		for k, v in pairs(G.P_CENTER_POOLS["Enhanced"]) do
-			if v.key ~= 'm_stone' then 
-				cen_pool[#cen_pool+1] = v
-			end
-		end
-		temp_deck[1]:set_ability(pseudorandom_element(cen_pool, pseudoseed('spe_card')))
-		temp_deck[2]:set_ability(pseudorandom_element(cen_pool, pseudoseed('spe_card')))
 	end
 end
 

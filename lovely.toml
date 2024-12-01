@@ -3,6 +3,7 @@ version = "1.0.0"
 dump_lua = true
 priority = 10
 
+# T.Red Deck
 [[patches]]
 [patches.pattern]
 target = 'functions/state_events.lua'
@@ -40,7 +41,7 @@ payload = '''
 G.GAME.selected_back:trigger_effect({context = 'ending_shop'})
 '''
 
-
+# T.Yellow Deck
 [[patches]]
 [patches.pattern]
 target = 'functions/common_events.lua'
@@ -51,7 +52,6 @@ payload = '''
 {n=G.UIT.T, config={text = (not G.GAME.selected_back.effect.config.money_mult) and (localize('$')..format_ui_value(config.dollars)) or (format_ui_value(config.dollars * G.GAME.selected_back.effect.config.money_mult + G.GAME.selected_back.effect.config.money_mult_min) .. "X" .. localize('$')) , scale = 1.2*scale, colour = G.C.WHITE, shadow = true, juice = true}}
 '''
 
-#
 [[patches]]
 [patches.pattern]
 target = 'functions/button_callbacks.lua'
