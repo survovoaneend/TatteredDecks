@@ -51,13 +51,22 @@ SMODS.Back{
 	key = "yellow",
     atlas = "b_side_atlas",
 	pos = {x = 2, y = 0},
-	config = {b_side = true},
+	config = {b_side = true, money_mult = 0.1, money_mult_min = 1.0, no_interest = true},
 	loc_txt = {
 		name = "Tattered Yellow Deck",
 		text ={
-			"Test Text",
+			"Money at the end of rounds",
+			"is instead converted to",
+			"a multiplier where each",
+			"dollar adds {C:money}#1#X${}",
+			"Earn no {C:attention}Interest",
 		},
     },
+	loc_vars = function(self)
+        return {
+            vars = { self.config.money_mult }
+        }
+	end,
 	apply = function()
 	end,
 	omit = true

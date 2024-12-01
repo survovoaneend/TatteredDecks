@@ -48,5 +48,18 @@ pattern = '''{n=G.UIT.T, config={text = localize('$')..format_ui_value(config.do
 position = 'at'
 match_indent = true
 payload = '''
-{n=G.UIT.T, config={text = format_ui_value(config.dollars * 0.1 + 1.0) .. "X" .. localize('$'), scale = 1.2*scale, colour = G.C.WHITE, shadow = true, juice = true}}
+{n=G.UIT.T, config={text = (not G.GAME.selected_back.effect.config.money_mult) and (localize('$')..format_ui_value(config.dollars)) or (format_ui_value(config.dollars * G.GAME.selected_back.effect.config.money_mult + G.GAME.selected_back.effect.config.money_mult_min) .. "X" .. localize('$')) , scale = 1.2*scale, colour = G.C.WHITE, shadow = true, juice = true}}
+'''
+
+#
+[[patches]]
+[patches.pattern]
+target = 'functions/button_callbacks.lua'
+pattern = '''G.FUNCS.cash_out = function(e)'''
+position = 'after'
+match_indent = true
+payload = '''
+if G.GAME.selected_back.effect.config.money_mult then
+    G.GAME.current_round.dollars = math.floor((G.GAME.current_round.dollars * G.GAME.selected_back.effect.config.money_mult + G.GAME.selected_back.effect.config.money_mult_min) * G.GAME.dollars) - G.GAME.dollars
+end
 '''
