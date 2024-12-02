@@ -114,7 +114,7 @@ SMODS.Back{
 	key = "nebula",
     atlas = "b_side_atlas",
 	pos = {x = 0, y = 0},
-	config = {b_side = true, alt_planet_levels = 3, negative_planet_levels = 1, consumables = {'c_high_priestess'}},
+	config = {b_side = true, alt_planet_levels = 2, negative_planet_levels = 1, consumables = {'c_high_priestess'}},
 	loc_txt = {
 		name = "Tattered Nebula Deck",
 		text ={
