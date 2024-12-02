@@ -146,7 +146,7 @@ SMODS.Back{
 			"Start run with",
 			"{C:attention}52{} {C:spades}Spades{} in deck",
 			"Played card's suits are rotated",
-			"{C:spades}Spades{}->{C:hearts}Hearts{}->{C:clubs}Clubs{}->{C:diamonds}Diamonds{}->{C:spades}Spades{}"
+			"{C:spades}Spades{}»{C:hearts}Hearts{}»{C:clubs}Clubs{}»{C:diamonds}Diamonds{}»{C:spades}Spades{}"
 		},
     },
 	apply = function()
