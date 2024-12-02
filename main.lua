@@ -41,7 +41,7 @@ SMODS.Back{
 	loc_txt = {
 		name = "Tattered Blue Deck",
 		text ={
-			"Test Text",
+			"Work in Progress (does nothing)",
 		},
     },
 	apply = function()
@@ -84,7 +84,7 @@ SMODS.Back{
 	loc_txt = {
 		name = "Tattered Green Deck",
 		text ={
-			"Test Text",
+			"Work in Progress (does nothing)",
 		},
     },
 	apply = function()
@@ -101,7 +101,7 @@ SMODS.Back{
 	loc_txt = {
 		name = "Tattered Black Deck",
 		text ={
-			"Test Text",
+			"Work in Progress (does nothing)",
 		},
     },
 	apply = function()
@@ -118,7 +118,11 @@ SMODS.Back{
 	loc_txt = {
 		name = "Tattered Magic Deck",
 		text ={
-			"Test Text",
+			"Gain 2 random eternal{C:tarot}tarot{} cards",
+			"every blind.",
+			"Joker slots will be filled if", 
+			"there are no empty consumable slots",
+			"{C:attention}Jokers can be destroyed to make room!{}"
 		},
     },
 	apply = function()
@@ -188,7 +192,7 @@ SMODS.Back{
 	loc_txt = {
 		name = "Tattered Zodiac Deck",
 		text ={
-			"Test Text",
+			"Work in progress (doesn't do anything)",
 		},
     },
 	apply = function()
@@ -205,7 +209,7 @@ SMODS.Back{
 	loc_txt = {
 		name = "Tattered Anaglyph Deck",
 		text ={
-			"Test Text",
+			"Work in progress (doesn't do anything)",
 		},
     },
 	apply = function()
@@ -222,7 +226,7 @@ SMODS.Back{
 	loc_txt = {
 		name = "Tattered Plasma Deck",
 		text ={
-			"Test Text",
+			"Work in progress (doesn't do anything)",
 		},
     },
 	apply = function()
@@ -240,7 +244,7 @@ SMODS.Back{
 	loc_txt = {
 		name = "Tattered Erratic Deck",
 		text ={
-			"Test Text",
+			"Work in progress (doesn't do anything)",
 		},
     },
 	apply = function()
@@ -255,7 +259,7 @@ SMODS.Atlas {
 }
 
 -- Auto add tattered decks
-for _, deck in ipairs({"red", "yellow", "magic", "nebula", "checkered"}) do
+for _, deck in ipairs({"red", "blue", "yellow", "green", "black", "magic", "nebula", "checkered", "zodiac", "anaglyph", "plasma", "erratic"}) do
 	Tattered.add_b_side("b_" .. deck, "b_tattered_" .. deck)
 end
 
