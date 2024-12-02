@@ -66,8 +66,6 @@ end
 
 # T.Nebula Deck
 
-#level_up_hand(used_tarot, handname, nil, -1)
-#level_up_hand(used_tarot, self.ability.consumeable.hand_type)
 [[patches]]
 [patches.pattern]
 target = 'card.lua'
@@ -89,4 +87,17 @@ if G.GAME.selected_back.effect.config.negative_planet_levels then
         level_up_hand(used_tarot, random_hand, nil, -G.GAME.selected_back.effect.config.negative_planet_levels)
     end
 end
+'''
+
+# T.Magic Deck
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''G.jokers.cards[i]:calculate_joker({setting_blind = true, blind = G.GAME.round_resets.blind})
+            end'''
+position = 'after'
+match_indent = true
+payload = '''
+G.GAME.selected_back:trigger_effect({context = 'setting_blind'})
 '''
